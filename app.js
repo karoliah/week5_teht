@@ -36,5 +36,9 @@ app.get('/', (req,res) => {
     res.send(`Hello! secure? ${req.secure}`);
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+//app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+http.createServer((req, res) => {
+    res.writeHead(301, { 'Location': 'https://localhost:8000' + req.url });
+    res.end();
+}).listen(port);
 https.createServer(options, app).listen(httpsPort);
