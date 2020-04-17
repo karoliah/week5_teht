@@ -2,8 +2,21 @@
 require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 const app = express();
 const port = 3000;
+const httpsPort = 8000;
+
+const sslkey = fs.readFileSync('ssl-key.pem');
+const sslcert = fs.readFileSync('ssl-cert.pem');
+
+const options = {
+    key: sslkey,
+    cert: sslcert
+};
+
 const passport = require('./utils/pass');
 const catRoute = require('./routes/catRoute');
 const userRoute = require('./routes/userRoute');
@@ -19,4 +32,9 @@ app.use('/auth', authRoute);
 app.use('/cat', passport.authenticate('jwt', {session: false}), catRoute);
 app.use('/user', passport.authenticate('jwt', {session: false}), userRoute);
 
+app.get('/', (req,res) => {
+    res.send(`Hello! secure? ${req.secure}`);
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+https.createServer(options, app).listen(httpsPort);
