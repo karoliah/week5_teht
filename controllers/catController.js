@@ -2,6 +2,7 @@
 const catModel = require('../models/catModel');
 const {validationResult} = require('express-validator');
 const makeThumbnail = require('../utils/resize').makeThumbnail;
+const imageMeta = require('../utils/imageMeta');
 
 const cats = catModel.cats;
 
@@ -25,16 +26,23 @@ const cat_post = async (req, res) => {
     return res.status(422).json({errors: errors.array()});
   }
 
-  const inCat = {
-    name: req.body.name,
-    age: req.body.age,
-    weight: req.body.weight,
-    owner: req.body.owner,
-    filename: req.file.filename,
-  };
   try {
     const thumb = await makeThumbnail(req.file.path, './thumbnails/'+req.file.filename);
-    const cat = await catModel.insertCat(inCat);
+    console.log(thumb);
+
+    const coords = await imageMeta.getCoordinates(req.file.path);
+    console.log('coords', coords);
+
+    const params = [
+      req.body.name,
+      req.body.age,
+      req.body.weight,
+      req.body.owner,
+      req.file.filename,
+      coords,
+    ];
+
+    const cat = await catModel.insertCat(params);
     console.log('inserted', cat);
     res.send(`added cat: ${cat.insertId}`);
   }
