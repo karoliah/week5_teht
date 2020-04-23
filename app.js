@@ -4,7 +4,6 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const port = 3000;
-
 const passport = require('./utils/pass');
 const authRoute = require('./routes/authRoute');
 const catRoute = require('./routes/catRoute');
@@ -16,19 +15,9 @@ app.use(express.urlencoded({extended: true})); // for parsing application/x-www-
 app.use(express.static('public'));
 app.use(express.static('uploads'));
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-if (process.env.NODE_ENV === 'production') {
-  require('./remote')(app, port);
-} else {
-  require('./localhost')(app, port);
-}
-
 app.use('/auth', authRoute);
 app.use('/cat', passport.authenticate('jwt', {session: false}), catRoute);
 app.use('/user', passport.authenticate('jwt', {session: false}), userRoute);
 
-app.get('/', (req, res) => {
-  res.send(`Hello! secure? ${req.secure}`);
-});
 
-
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));

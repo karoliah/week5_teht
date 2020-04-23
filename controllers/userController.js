@@ -1,9 +1,7 @@
 'use strict';
 const userModel = require('../models/userModel');
 const {validationResult} = require('express-validator');
-const  bcrypt = require('bcryptjs');
 
-const  salt = bcrypt.genSaltSync(10);
 const users = userModel.users;
 
 const user_list_get = async (req, res) => {
@@ -16,6 +14,7 @@ const user_get = async (req, res) => {
   const user = await userModel.getUser(req.params.id);
   res.json(user);
 };
+
 /*
 const user_post = async (req, res) => {
   console.log('user_post', req.body);
@@ -25,12 +24,7 @@ const user_post = async (req, res) => {
   }
 
   try {
-    const params = [
-      req.body.name,
-      req.body.username,
-      await bcrypt.hash(req.body.password, salt), // TODO: save hash instead of the actual password
-    ];
-    const user = await userModel.insertUser(params);
+    const user = await userModel.insertUser(req.body);
     console.log('inserted', user);
     res.send(`added user: ${user.insertId}`);
   } catch (e) {
@@ -39,14 +33,10 @@ const user_post = async (req, res) => {
   }
 };
 */
+
 const user_put = async (req, res) => {
   console.log('user_put', req.body);
-  const params = [
-    req.body.name,
-    req.body.username,
-    await bcrypt.hash(req.body.password, salt), // TODO: save hash instead of the actual password
-  ];
-  const upUser = await userModel.updateUser(params);
+  const upUser = await userModel.updateUser(req.body);
   console.log('user_put result from db', upUser);
   res.status(204).send();
 };
@@ -61,7 +51,6 @@ const user_delete = async (req, res) => {
 module.exports = {
   user_list_get,
   user_get,
-  //user_post,
   user_put,
   user_delete,
 };

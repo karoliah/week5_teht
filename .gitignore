@@ -262,8 +262,3 @@ Temporary Items
 out
 gen
 uploads/
-
-# localhost https key and certificates
-certrequest.csr
-ssl-cert.pem
-ssl-key.pem

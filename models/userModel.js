@@ -23,7 +23,7 @@ const getUser = async (id) => {
 const insertUser = async (user) => {
   try {
     console.log('insert user?', user);
-    const [rows] = await promisePool.query('INSERT INTO wop_user (name, email, password) VALUES (?, ?, ?)', [ user.name, user.email, user.passwd ]);
+    const [rows] = await promisePool.query('INSERT INTO wop_user (name, email, password) VALUES (?, ?, ?)', user);
     return rows;
   } catch (e) {
     console.error('error', e.message);
