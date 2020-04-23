@@ -12,8 +12,9 @@ const userRoute = require('./routes/userRoute');
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({extended: true})); // for parsing application/x-www-form-urlencoded
-app.use(express.static('public'));
+app.use(express.static('week2_public_html'));
 app.use(express.static('uploads'));
+app.use('/thumbnails', express.static('thumbnails'));
 
 app.use('/auth', authRoute);
 app.use('/cat', passport.authenticate('jwt', {session: false}), catRoute);
