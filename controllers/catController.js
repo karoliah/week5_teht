@@ -33,7 +33,7 @@ const cat_post = async (req, res) => {
     filename: req.file.filename,
   };
   try {
-    const thumb = await makeThumbnail(req.file.path, './thumbnails' + req.file.filename);
+    const thumb = await makeThumbnail(req.file.path, './thumbnails/'+req.file.filename);
     const cat = await catModel.insertCat(inCat);
     console.log('inserted', cat);
     res.send(`added cat: ${cat.insertId}`);
