@@ -1,3 +1,3 @@
-# week5_teht
+# wop-starters
 
-week5 tehtäcät
+Choose a branch and download as zip.

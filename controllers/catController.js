@@ -63,11 +63,11 @@ const cat_delete = async (req, res) => {
 };
 
 const cat_file_validator = (value, {req}) => {
-
+  // value can be anything, only req.file is checked
   if (!req.file) {
     throw new Error('No image');
   }
-
+  // if OK
   return true;
 };
 
